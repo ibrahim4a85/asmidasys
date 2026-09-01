@@ -1,0 +1,205 @@
+@import "tailwindcss";
+@import "tw-animate-css";
+
+@custom-variant dark (&:is(.dark *));
+
+/* تُدار الثيمات عبر متغيرات CSS كي يستطيع ThemeProvider تبديل الوضع الفاتح/الداكن
+   ولون التفاعل أثناء التشغيل دون إعادة بناء. نفس المقاربة المعتمدة في asmidasys. */
+@theme {
+  --color-background: oklch(0.98 0.01 260);
+  --color-foreground: oklch(0.15 0.02 260);
+  --color-card: oklch(0.99 0 0);
+  --color-card-foreground: oklch(0.15 0.02 260);
+  --color-popover: oklch(0.99 0 0);
+  --color-popover-foreground: oklch(0.15 0.02 260);
+  --color-primary: oklch(0.5 0.18 250);
+  --color-primary-foreground: oklch(0.99 0 0);
+  --color-secondary: oklch(0.5 0.18 160);
+  --color-secondary-foreground: oklch(0.99 0 0);
+  --color-muted: oklch(0.92 0.01 260);
+  --color-muted-foreground: oklch(0.55 0.02 260);
+  --color-accent: oklch(0.6 0.18 50);
+  --color-accent-foreground: oklch(0.99 0 0);
+  --color-destructive: oklch(0.55 0.2 25);
+  --color-destructive-foreground: oklch(0.99 0 0);
+  --color-border: oklch(0.88 0.01 260);
+  --color-input: oklch(0.95 0.01 260);
+  --color-ring: oklch(0.5 0.18 250);
+  --color-chart-1: oklch(0.5 0.18 250);
+  --color-chart-2: oklch(0.5 0.18 160);
+  --color-chart-3: oklch(0.6 0.18 50);
+  --color-chart-4: oklch(0.55 0.15 300);
+  --color-chart-5: oklch(0.65 0.15 100);
+  --color-sidebar: oklch(0.97 0.01 250);
+  --color-sidebar-foreground: oklch(0.25 0.05 250);
+  --color-sidebar-primary: oklch(0.5 0.18 250);
+  --color-sidebar-primary-foreground: oklch(0.99 0 0);
+  --color-sidebar-accent: oklch(0.6 0.18 50);
+  --color-sidebar-accent-foreground: oklch(0.99 0 0);
+  --color-sidebar-border: oklch(0.88 0.01 260);
+  --color-sidebar-ring: oklch(0.5 0.18 250);
+  --radius-sm: 0.25rem;
+  --radius-md: 0.375rem;
+  --radius-lg: 0.5rem;
+  --radius-xl: 0.75rem;
+  --font-sans: "Cairo", sans-serif;
+}
+
+@layer base {
+  html,
+  body,
+  #root {
+    direction: rtl;
+    text-align: right;
+    min-width: 0;
+    max-width: 100%;
+  }
+
+  * {
+    @apply border-border;
+  }
+  body {
+    @apply bg-background text-foreground font-sans;
+    direction: rtl;
+    overflow-x: clip;
+  }
+
+  input,
+  textarea,
+  select,
+  button,
+  [role="textbox"],
+  [role="combobox"] {
+    direction: rtl;
+    text-align: right;
+  }
+
+  input[type="number"],
+  input[type="date"],
+  input[type="file"],
+  .numeric-field,
+  .ltr-content {
+    direction: ltr;
+    text-align: left;
+  }
+
+  table {
+    direction: rtl;
+  }
+
+  th,
+  td,
+  [role="columnheader"],
+  [role="cell"] {
+    text-align: right;
+  }
+
+  label,
+  legend,
+  [role="tab"],
+  [role="menuitem"] {
+    text-align: right;
+  }
+
+  [data-radix-popper-content-wrapper] {
+    direction: rtl;
+    text-align: right;
+  }
+
+  .container {
+    @apply mx-auto px-4 sm:px-6 lg:px-8;
+    max-width: 1280px;
+  }
+  .flex {
+    min-width: 0;
+    min-height: 0;
+  }
+}
+
+/* RTL primitives */
+.rtl-page {
+  direction: rtl;
+  text-align: right;
+}
+.rtl-page .text-left:not(.numeric-field):not(.ltr-content) {
+  text-align: right;
+}
+.rtl-page .overflow-x-auto {
+  -webkit-overflow-scrolling: touch;
+  overscroll-behavior-inline: contain;
+}
+
+@media (max-width: 639px) {
+  .rtl-page {
+    overflow-x: clip;
+  }
+  .rtl-page h1 {
+    font-size: 1.35rem;
+    line-height: 1.8rem;
+  }
+  .rtl-page [role="tablist"] {
+    width: 100%;
+    justify-content: stretch;
+  }
+  .rtl-page [role="tab"] {
+    flex: 1 1 auto;
+    min-width: 0;
+    font-size: 0.78rem;
+  }
+}
+
+/* Custom scrollbar */
+::-webkit-scrollbar {
+  width: 6px;
+  height: 6px;
+}
+::-webkit-scrollbar-track {
+  background: transparent;
+}
+::-webkit-scrollbar-thumb {
+  background: oklch(0.7 0.02 260);
+  border-radius: 3px;
+}
+::-webkit-scrollbar-thumb:hover {
+  background: oklch(0.5 0.02 260);
+}
+
+@keyframes ticker {
+  0% { transform: translateX(-100%); }
+  100% { transform: translateX(100%); }
+}
+.news-ticker {
+  animation: ticker var(--ticker-speed, 20s) linear infinite;
+}
+
+/* Dark mode retains the selected accent color while replacing every semantic surface. */
+.dark {
+  --color-background: oklch(0.17 0.018 258);
+  --color-foreground: oklch(0.94 0.012 258);
+  --color-card: oklch(0.22 0.02 258);
+  --color-card-foreground: oklch(0.94 0.012 258);
+  --color-popover: oklch(0.235 0.02 258);
+  --color-popover-foreground: oklch(0.94 0.012 258);
+  --color-secondary: oklch(0.42 0.11 160);
+  --color-secondary-foreground: oklch(0.96 0.01 258);
+  --color-muted: oklch(0.285 0.018 258);
+  --color-muted-foreground: oklch(0.72 0.018 258);
+  --color-accent: oklch(0.48 0.13 55);
+  --color-accent-foreground: oklch(0.97 0.01 258);
+  --color-destructive: oklch(0.62 0.17 25);
+  --color-destructive-foreground: oklch(0.98 0.01 258);
+  --color-border: oklch(0.36 0.02 258);
+  --color-input: oklch(0.265 0.018 258);
+  --color-sidebar: oklch(0.14 0.02 258);
+  --color-sidebar-foreground: oklch(0.91 0.015 258);
+  --color-sidebar-accent: oklch(0.3 0.025 258);
+  --color-sidebar-accent-foreground: oklch(0.97 0.01 258);
+  color-scheme: dark;
+}
+.dark ::-webkit-scrollbar-thumb { background: oklch(0.45 0.02 258); }
+.dark ::-webkit-scrollbar-thumb:hover { background: oklch(0.6 0.025 258); }
+
+@media print {
+  .no-print { display: none !important; }
+  body { background: white !important; }
+}

@@ -1,0 +1,25 @@
+# ==== نشر منصة ERP بضغطة واحدة ====
+# docker compose up -d
+#
+# للانتقال إلى MySQL 8 (استضافة حقيقية): انشر قاعدة MySQL خارجياً وأشِر إليها
+# عبر DATABASE_URL في متغيرات البيئة بدل الحاوية sqlite المضمّنة.
+
+services:
+  erp:
+    build: .
+    container_name: asmidasys-erp
+    restart: unless-stopped
+    ports:
+      - "3001:3001"
+    environment:
+      NODE_ENV: production
+      PORT: 3001
+      SESSION_SECRET: ${SESSION_SECRET:-change-me-in-production}
+      DATABASE_URL: ${DATABASE_URL:-sqlite:./data/erp.db}
+    volumes:
+      - erp_data:/app/data
+      - erp_uploads:/app/uploads
+
+volumes:
+  erp_data:
+  erp_uploads:
